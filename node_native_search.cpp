@@ -49,6 +49,7 @@ void Method(const v8::FunctionCallbackInfo<v8::Value> &args)
     for (int i = 0; i < res.size(); i++)
     {
         Local<Object> curObj = Object::New(isolate);
+
         {
             std::string tmp(res[i].fileName.begin(), res[i].fileName.end());
 
@@ -61,11 +62,13 @@ void Method(const v8::FunctionCallbackInfo<v8::Value> &args)
             curObj->Set(String::NewFromUtf8(isolate, "lineText"),
                         v8::String::NewFromUtf8(isolate, tmp.c_str()));
         }
+
         {
             std::string tmp(res[i].Text.begin(), res[i].Text.end());
             curObj->Set(String::NewFromUtf8(isolate, "Text"),
                         v8::String::NewFromUtf8(isolate, tmp.c_str()));
         }
+        //not sure about wstring to string might not work on languages and stuff
         curObj->Set(String::NewFromUtf8(isolate, "line"),
                     Number::New(isolate, res[i].line));
 
