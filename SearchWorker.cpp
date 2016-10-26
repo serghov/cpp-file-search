@@ -4,8 +4,8 @@
 
 #include "SearchWorker.h"
 
-SearchWorker::SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr)
-        : AsyncWorker(callback), searchRoot(searchRoot), regexWStr(regexWStr), error() {}
+SearchWorker::SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit)
+        : AsyncWorker(callback), searchRoot(searchRoot), regexWStr(regexWStr), error(), searchLimit(searchLimit) {}
 
 SearchWorker::~SearchWorker() {}
 
@@ -15,7 +15,7 @@ void SearchWorker::Execute()
     wregex reg(this->regexWStr);
     try
     {
-        findInFiles(myPath, reg, this->res);
+        findInFiles(myPath, reg, this->res, this->searchLimit);
     }
     catch (std::exception const &e)
     {

@@ -17,7 +17,7 @@ int main()
     const path myPath = L"/home/serg/cpp";
     wregex reg(L"include");
     vector<occurrence> res{};
-    int k = findInFiles(myPath, reg, res);
+    int k = findInFiles(myPath, reg, res, 10);
 
     for (int i = 0; i < res.size(); i++)
     {

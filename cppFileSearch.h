@@ -39,4 +39,4 @@ struct occurrence
 
 void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &reg, vector<occurrence> &res);
 
-int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res);
+int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int limit);

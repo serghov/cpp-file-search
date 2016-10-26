@@ -18,9 +18,19 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value> &info)
     std::wstring pathWStr = std::wstring(pathStr.begin(), pathStr.end());//not good reimplement
     std::wstring regWStr = std::wstring(regStr.begin(), regStr.end());//not good reimplement
 
-    Callback *callback = new Callback(info[2].As<Function>());
+    int limit = -1;
+    Callback *callback;
+    
+    if (info[2]->IsNumber())
+    {
+        limit = info[2]->NumberValue();
+        callback = new Callback(info[3].As<Function>());
+    } else
+    {
+        callback = new Callback(info[2].As<Function>());
+    }
 
-    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr));
+    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr, limit));
 }
 
 void Init(v8::Local <v8::Object> exports, v8::Local <v8::Object> module)

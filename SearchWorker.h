@@ -24,8 +24,9 @@ class SearchWorker : public AsyncWorker
     wstring searchRoot, regexWStr;
     vector<occurrence> res;
     std::string error;
+    int searchLimit;
 public:
-    SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr);
+    SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit);
 
     ~SearchWorker();
 

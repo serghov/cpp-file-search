@@ -21,6 +21,11 @@ var nativeFileSearch = require('./build/Release/nativeFileSearch');
 nativeFileSearch("/search/root/path", "search regex", function (err, data) {
     console.log(data);
 });
+
+var limit = 10;
+nativeFileSearch("/search/root/path", "search regex", limit, function (err, data) {
+    console.log(data);
+});
 ```
 
 

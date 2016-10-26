@@ -2,7 +2,7 @@
 
 var nativeFileSearch = require('./build/Release/nativeFileSearch');
 
-nativeFileSearch("/home/serg/cpp", "include", function (err, data) {
+nativeFileSearch("/home/serg/cpp", "include", 10, function (err, data) {
     console.log(err);
     console.log(data);
 });
