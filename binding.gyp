@@ -1,29 +1,31 @@
 {
   "targets": [
     {
-      "target_name": "node_native_search",
+      "target_name": "nativeFileSearch",
       "defines": [
         "V8_DEPRECATION_WARNINGS=1"
       ],
       "sources": [
-        "node_native_search.cpp",
-        "cpp_file_search.cpp",
-        "cpp_file_search.h"
+        "nativeFileSearch.cpp",
+        "cppFileSearch.cpp",
+        "cppFileSearch.h",
+        "SearchWorker.cpp",
+        "SearchWorker.h"
       ],
-
       "include_dirs": [
-        "/usr/include/boost"
+        "/usr/include/boost",
+        "<!(node -e \"require('nan')\")"
       ],
       "libraries": [
         "/usr/lib/x86_64-linux-gnu/libboost_system.so",
-        "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so",
-        "/usr/lib/x86_64-linux-gnu/libboost_regex.so"
+        "/usr/lib/x86_64-linux-gnu/libboost_filesystem.so"
       ],
       "cflags_cc!": [
         "-fno-rtti",
         "-fno-exceptions"
       ],
       "cflags!": [
+        "-Wall",
         "-std=c++11",
         "-fno-exceptions"
       ]

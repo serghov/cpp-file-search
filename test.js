@@ -1,5 +1,8 @@
 'use strict';
-var assert = require('assert');
-const binding = require('./build/Release/node_native_search');
 
-console.log(binding.native_file_search("/home/serg/cpp", "include"));
+var nativeFileSearch = require('./build/Release/nativeFileSearch');
+
+nativeFileSearch("/home/serg/cpp", "include", function (err, data) {
+    console.log(data);
+});
+console.log("we are very async");

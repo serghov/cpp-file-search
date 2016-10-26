@@ -5,7 +5,7 @@
 #include <string>
 #include <regex>
 #include <fstream>
-#include "cpp_file_search.h"
+#include "cppFileSearch.h"
 
 using namespace std;
 using namespace boost;

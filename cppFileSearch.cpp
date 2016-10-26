@@ -2,7 +2,7 @@
 // Created by serg on 10/25/16.
 //
 
-#include "cpp_file_search.h"
+#include "cppFileSearch.h"
 
 void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &reg, vector<occurrence> &res)
 {

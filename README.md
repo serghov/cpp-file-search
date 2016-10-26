@@ -6,17 +6,21 @@ $ sudo apt-get install libboost-filesystem-dev
 ```
 
 ```sh
-$ node-gyp configure
-$ node-gyp build
+$ npm install
 ```
 
 ```sh
 $ node test.js
 ```
 
+from js
+
 ```js
-const file_search = require('./build/Release/node_native_search');
-console.log(file_search.native_file_search("/your/directory", "search term"));
+var nativeFileSearch = require('./build/Release/nativeFileSearch');
+
+nativeFileSearch("/search/root/path", "search regex", function (err, data) {
+    console.log(data);
+});
 ```
 
 
