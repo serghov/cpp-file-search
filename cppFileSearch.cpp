@@ -35,7 +35,7 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
     const auto it = find_if(recursive_directory_iterator(dir_path), end,
                             [&reg, &res, &files, limit](const directory_entry &e)
                             {
-                                if (limit != -1 && files >= limit)
+                                if (limit != -1 && res.size() >= limit)
                                     return true;
                                 boost::filesystem::wifstream fin(e.path());
                                 vector<occurrence> cur{};
