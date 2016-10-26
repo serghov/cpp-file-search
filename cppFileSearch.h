@@ -28,7 +28,7 @@ struct occurrence
 
     occurrence(wstring fileName, wstring lineText, wstring Text, int line, int position)
             :
-            fileName(fileName), lineText(lineText), Text(Text), line(line), position(position) {}
+            line(line), position(position), fileName(fileName), lineText(lineText), Text(Text) {}
 
     wstring toString()
     {
