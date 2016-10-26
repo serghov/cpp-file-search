@@ -1,7 +1,7 @@
 #include "SearchWorker.h"
 
-//#include <nan.h>
-#include "node_modules/nan/nan.h"
+#include <nan.h>
+//#include "node_modules/nan/nan.h"
 #include <functional>
 #include <iostream>
 #include <cmath>
@@ -20,7 +20,7 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value> &info)
 
     int limit = -1;
     Callback *callback;
-    
+
     if (info[2]->IsNumber())
     {
         limit = info[2]->NumberValue();
