@@ -19,6 +19,7 @@ void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &
         {
 
             res.push_back(occurrence(filename, line, it->str(), lineNum, it->position()));
+
             //cout << it->str() << endl;
             //index_matches.push_back(it->position());
         }
@@ -37,6 +38,11 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
                             {
                                 if (limit != -1 && res.size() >= limit)
                                     return true;
+                                if (boost::filesystem::is_directory(e.path()))
+                                    return false;
+                                if (boost::filesystem::file_size(e.path()) > max_file_size)
+                                    return false;
+                                //cout << boost::filesystem::file_size(e.path()) << endl;
                                 boost::filesystem::wifstream fin(e.path());
                                 vector<occurrence> cur{};
                                 findInFile(fin, e.path().wstring(), reg, cur);

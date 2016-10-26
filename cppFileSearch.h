@@ -37,6 +37,11 @@ struct occurrence
     }
 };
 
+enum
+{
+    max_file_size = 50 * 1024 * 1024
+};//make accessible from js somehow
+
 void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &reg, vector<occurrence> &res);
 
 int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int limit);
