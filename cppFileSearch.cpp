@@ -40,7 +40,17 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
                                     return true;
                                 if (boost::filesystem::is_directory(e.path()))
                                     return false;
-                                if (boost::filesystem::file_size(e.path()) > max_file_size)
+                                uintmax_t fileSize = 0;
+                                try
+                                {
+                                    fileSize = boost::filesystem::file_size(e.path());
+                                }
+                                catch (std::exception e)
+                                {
+                                    return false;
+                                }
+
+                                if (fileSize == 0 || fileSize > max_file_size)
                                     return false;
                                 //cout << boost::filesystem::file_size(e.path()) << endl;
                                 boost::filesystem::wifstream fin(e.path());
