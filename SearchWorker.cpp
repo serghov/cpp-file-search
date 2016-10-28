@@ -12,7 +12,7 @@ SearchWorker::~SearchWorker() {}
 void SearchWorker::Execute()
 {
     const path myPath = this->searchRoot;
-    wregex reg(this->regexWStr);
+    wregex reg(this->regexWStr, std::regex_constants::ECMAScript);
     try
     {
         findInFiles(myPath, reg, this->res, this->searchLimit);
