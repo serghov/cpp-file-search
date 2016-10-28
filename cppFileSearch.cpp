@@ -62,3 +62,11 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
                             });
     return files;
 }
+
+wstring escapeRegex(const wstring &str)
+{
+	static const wregex re_RegexEscape( L"[.^$|()\\[\\]{}*+?\\\\]" );
+	const wstring rep(L"\\\\&");
+	wstring result = regex_replace(str, re_RegexEscape, rep, std::regex_constants::match_default | std::regex_constants::format_sed);
+	return result;
+}
