@@ -21,16 +21,23 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value> &info)
     int limit = -1;
     Callback *callback;
 
-    if (info[2]->IsNumber())
+    int lastIndex = 2;
+	bool caseSensitive = true;
+
+	if (info[lastIndex]->IsBoolean())
+	{
+		caseSensitive = info[lastIndex]->IsTrue();
+		lastIndex++;
+	}
+    if (info[lastIndex]->IsNumber())
     {
-        limit = info[2]->NumberValue();
-        callback = new Callback(info[3].As<Function>());
-    } else
-    {
-        callback = new Callback(info[2].As<Function>());
+        limit = info[lastIndex]->NumberValue();
+		lastIndex++;
     }
 
-    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr, limit));
+	callback = new Callback(info[lastIndex].As<Function>());
+
+    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr, limit, caseSensitive));
 }
 
 void Init(v8::Local <v8::Object> exports, v8::Local <v8::Object> module)

@@ -25,8 +25,9 @@ class SearchWorker : public AsyncWorker
     vector<occurrence> res;
     std::string error;
     int searchLimit;
+	bool caseSensitive;
 public:
-    SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit);
+    SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit, bool caseSensitive = false);
 
     ~SearchWorker();
 
