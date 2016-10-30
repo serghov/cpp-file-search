@@ -4,20 +4,27 @@
 
 #include "SearchWorker.h"
 
-SearchWorker::SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit, bool caseSensitive)
-        : AsyncWorker(callback), searchRoot(searchRoot), regexWStr(regexWStr), error(), searchLimit(searchLimit), caseSensitive(caseSensitive) {}
+SearchWorker::SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit,
+                           bool caseSensitive, bool isRegex)
+        : AsyncWorker(callback), searchRoot(searchRoot), regexWStr(regexWStr), error(), searchLimit(searchLimit),
+          caseSensitive(caseSensitive), isRegex(isRegex) {}
 
 SearchWorker::~SearchWorker() {}
 
 void SearchWorker::Execute()
 {
-    const path myPath = this->searchRoot;
-
-    wregex reg(this->regexWStr, (!this->caseSensitive)?std::regex_constants::icase|std::regex_constants::ECMAScript : std::regex_constants::ECMAScript);
-    //implement this better somehow
     try
     {
+        const bf::path myPath = this->searchRoot;
+
+        auto regex_type = std::regex_constants::ECMAScript;
+        if (!this->caseSensitive)
+            regex_type |= std::regex_constants::icase;
+        if (!this->isRegex)
+            this->regexWStr = escapeRegex(regexWStr);
+        wregex reg(this->regexWStr, regex_type);
         findInFiles(myPath, reg, this->res, this->searchLimit);
+
     }
     catch (std::exception const &e)
     {

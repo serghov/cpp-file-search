@@ -14,10 +14,11 @@
 #include <string>
 #include <regex>
 #include <fstream>
+#include <locale>
+#include <codecvt>
 
 using namespace std;
-using namespace boost;
-using namespace boost::filesystem;
+namespace bf = boost::filesystem;
 
 struct occurrence
 {
@@ -42,8 +43,11 @@ enum
     max_file_size = 50 * 1024 * 1024
 };//make accessible from js somehow
 
-void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &reg, vector<occurrence> &res);
+void findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, vector<occurrence> &res,
+                bool multiline = false);
 
-int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int limit);
+int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> &res, int limit);
 
 wstring escapeRegex(const wstring &str);
+
+wstring utf8ToWstring(const string &str);

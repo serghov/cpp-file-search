@@ -14,7 +14,7 @@ using namespace boost::filesystem;
 int main()
 {
 
-    const path myPath = L"/home/serg/cpp";
+    const path myPath = L"/home/serg/cpp/Android";
     wregex reg(L"include");
     vector<occurrence> res{};
     int k = findInFiles(myPath, reg, res, 10);

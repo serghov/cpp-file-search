@@ -6,7 +6,7 @@
         "V8_DEPRECATION_WARNINGS=1"
       ],
       "sources": [
-        "nativeFileSearch.cpp",
+        "nativeSearch.cpp",
         "cppFileSearch.cpp",
         "cppFileSearch.h",
         "SearchWorker.cpp",

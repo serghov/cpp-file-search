@@ -4,46 +4,65 @@
 
 #include "cppFileSearch.h"
 
-void findInFile(boost::filesystem::wifstream &stream, wstring filename, wregex &reg, vector<occurrence> &res)
+void
+findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, vector<occurrence> &res,
+           bool multiline)
 {
     //vector<occurrence> res{};
     res = vector<occurrence>();
-    wstring line;
-    int lineNum = 0;
-    std::wsregex_iterator(line.begin(), line.end(), reg);
 
-    while (std::getline(stream, line))
+    auto findAll = [&res, &filename, &reg](wstring &text, int lineNum) //reimplement somehow with default arguments?
     {
-        for (auto it = std::wsregex_iterator(line.begin(), line.end(), reg);
+        std::wsregex_iterator(text.begin(), text.end(), reg);
+        for (auto it = std::wsregex_iterator(text.begin(), text.end(), reg);
              it != std::wsregex_iterator(); ++it)
         {
+            res.push_back(occurrence(filename, text, it->str(), lineNum, it->position()));
+            //doesnt work well with multiline search
+            //maybe we need to include the first line num
 
-            res.push_back(occurrence(filename, line, it->str(), lineNum, it->position()));
-
-            //cout << it->str() << endl;
-            //index_matches.push_back(it->position());
         }
-        lineNum++;
+    };
+    //read bom from files to check type then to processing
+    //will probably slow down everything
+    //maybe do this with a flag?
+    if (multiline)
+    {
+        /*wstring text;
+        string tmp((std::istreambuf_iterator<char>(stream)),
+                   std::istreambuf_iterator<char>());
+        text = wstring(tmp.begin(), tmp.end());
+        findAll(text, -1);*/
+    } else
+    {
+        int lineNum = 0;
+        wstring line;
+        while (std::getline(stream, line))
+        {
+            findAll(line, lineNum);
+            lineNum++;
+        }
 
     }
+
     //cout <<"here"<<endl;
 }
 
-int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int limit)
+int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> &res, int limit)
 {
-    const recursive_directory_iterator end;
+    const bf::recursive_directory_iterator end;
     int files = 0;
-    const auto it = find_if(recursive_directory_iterator(dir_path), end,
-                            [&reg, &res, &files, limit](const directory_entry &e)
+    const auto it = find_if(bf::recursive_directory_iterator(dir_path), end,
+                            [&reg, &res, &files, limit](const bf::directory_entry &e)
                             {
                                 if (limit != -1 && res.size() >= limit)
                                     return true;
-                                if (boost::filesystem::is_directory(e.path()))
+                                if (bf::is_directory(e.path()))
                                     return false;
                                 uintmax_t fileSize = 0;
                                 try
                                 {
-                                    fileSize = boost::filesystem::file_size(e.path());
+                                    fileSize = bf::file_size(e.path());
                                 }
                                 catch (std::exception e)
                                 {
@@ -53,7 +72,7 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
                                 if (fileSize == 0 || fileSize > max_file_size)
                                     return false;
                                 //cout << boost::filesystem::file_size(e.path()) << endl;
-                                boost::filesystem::wifstream fin(e.path());
+                                bf::wifstream fin(e.path());
                                 vector<occurrence> cur{};
                                 findInFile(fin, e.path().wstring(), reg, cur);
                                 res.insert(res.end(), cur.begin(), cur.end());
@@ -65,8 +84,18 @@ int findInFiles(const path &dir_path, wregex &reg, vector<occurrence> &res, int 
 
 wstring escapeRegex(const wstring &str)
 {
-	static const wregex re_RegexEscape( L"[.^$|()\\[\\]{}*+?\\\\]" );
-	const wstring rep(L"\\\\&");
-	wstring result = regex_replace(str, re_RegexEscape, rep, std::regex_constants::match_default | std::regex_constants::format_sed);
-	return result;
+    static const wregex re_RegexEscape(L"[\\-\\[\\]\\/\\{\\}\\(\\)\\*\\+\\?\\.\\\\\\^\\$\\|]");
+    const wstring rep(L"\\&");
+    wstring result = regex_replace(str, re_RegexEscape, rep,
+                                   std::regex_constants::match_default | std::regex_constants::format_sed);
+    wcout << result << endl;
+    return result;
+
+    //write tests for this, not sure if works every time
+}
+
+wstring utf8ToWstring(const string &str)
+{
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    return conv.from_bytes(str);
 }
