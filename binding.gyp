@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "nativeFileSearch",
+      "target_name": "native-search",
       "defines": [
         "V8_DEPRECATION_WARNINGS=1"
       ],

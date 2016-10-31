@@ -1,12 +1,12 @@
 'use strict';
 
-var nativeFileSearch = require('./build/Release/nativeFileSearch');
+var nativeFileSearch = require('./build/Release/native-search');
 
 nativeFileSearch.find({
     root: "./",
-    searchTerm: "(տեստ|1)",
+    searchTerm: "(տեստ|inClude)",
     isRegex: true,
-    resultLimit: 100,
+    resultLimit: 10000,
     caseSensitive: true
 }, function (err, data) {
     console.log(err);

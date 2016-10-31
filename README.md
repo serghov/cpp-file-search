@@ -16,15 +16,18 @@ $ node test.js
 from js
 
 ```js
-var nativeFileSearch = require('./build/Release/nativeFileSearch');
+var nativeFileSearch = require('native-search');
 
-nativeFileSearch("/search/root/path", "search regex", function (err, data) {
+nativeFileSearch.find({
+    root: "./",
+    searchTerm: "(տեստ|1)",
+    isRegex: true,
+    resultLimit: 100,
+    caseSensitive: true
+}, function (err, data) {
+    console.log(err);
     console.log(data);
-});
-
-var limit = 10;
-nativeFileSearch("/search/root/path", "search regex", limit, function (err, data) {
-    console.log(data);
+    console.log(data.length);
 });
 ```
 
