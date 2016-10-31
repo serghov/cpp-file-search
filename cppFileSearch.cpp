@@ -72,7 +72,8 @@ int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> 
                                 if (fileSize == 0 || fileSize > max_file_size)
                                     return false;
                                 //cout << boost::filesystem::file_size(e.path()) << endl;
-                                bf::wifstream fin(e.path());
+                                bf::wifstream fin(e.path());//using bf here instead of std to work with path, not the best solution
+                                fin.imbue(std::locale("en_US.UTF-8"));
                                 vector<occurrence> cur{};
                                 findInFile(fin, e.path().wstring(), reg, cur);
                                 res.insert(res.end(), cur.begin(), cur.end());
@@ -88,9 +89,7 @@ wstring escapeRegex(const wstring &str)
     const wstring rep(L"\\&");
     wstring result = regex_replace(str, re_RegexEscape, rep,
                                    std::regex_constants::match_default | std::regex_constants::format_sed);
-    wcout << result << endl;
     return result;
-
     //write tests for this, not sure if works every time
 }
 
@@ -98,4 +97,10 @@ wstring utf8ToWstring(const string &str)
 {
     wstring_convert<codecvt_utf8<wchar_t>> conv;
     return conv.from_bytes(str);
+}
+
+string wstringToUtf8 (const wstring& str)
+{
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    return conv.to_bytes(str);
 }

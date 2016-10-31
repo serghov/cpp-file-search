@@ -51,3 +51,5 @@ int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> 
 wstring escapeRegex(const wstring &str);
 
 wstring utf8ToWstring(const string &str);
+
+string wstringToUtf8 (const wstring& str);

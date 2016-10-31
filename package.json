@@ -6,6 +6,7 @@
   "main": "./build/Release/nativeFileSearch",
   "install": "node-gyp configure build",
   "dependencies": {
-    "nan": "*"
+    "nan": "*",
+    "node-gyp": "*"
   }
 }

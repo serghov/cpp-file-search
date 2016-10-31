@@ -44,21 +44,15 @@ void SearchWorker::HandleOKCallback()
                  [&](occurrence &value)
                  {
                      Local <Object> curObj = Nan::New<v8::Object>();
-                     {
-                         std::string tmp(value.fileName.begin(), value.fileName.end());
-                         curObj->Set(Nan::New("fileName").ToLocalChecked(),
-                                     Nan::New(tmp.c_str()).ToLocalChecked());
-                     }
-                     {
-                         std::string tmp(res[i].lineText.begin(), res[i].lineText.end());
-                         curObj->Set(Nan::New("lineText").ToLocalChecked(),
-                                     Nan::New(tmp.c_str()).ToLocalChecked());
-                     }
-                     {
-                         std::string tmp(res[i].Text.begin(), res[i].Text.end());
-                         curObj->Set(Nan::New("Text").ToLocalChecked(),
-                                     Nan::New(tmp.c_str()).ToLocalChecked());
-                     }
+
+					 curObj->Set(Nan::New("fileName").ToLocalChecked(),
+								 Nan::New(wstringToUtf8(value.fileName).c_str()).ToLocalChecked());
+
+					 curObj->Set(Nan::New("lineText").ToLocalChecked(),
+								 Nan::New(wstringToUtf8(value.lineText).c_str()).ToLocalChecked());
+
+					 curObj->Set(Nan::New("Text").ToLocalChecked(),
+								 Nan::New(wstringToUtf8(value.Text).c_str()).ToLocalChecked());
 
                      curObj->Set(Nan::New("line").ToLocalChecked(),
                                  Nan::New(value.line));

@@ -4,7 +4,7 @@ var nativeFileSearch = require('./build/Release/nativeFileSearch');
 
 nativeFileSearch.find({
     root: "./",
-    searchTerm: "include",
+    searchTerm: "(տեստ|1)",
     isRegex: true,
     resultLimit: 100,
     caseSensitive: true
