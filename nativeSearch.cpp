@@ -1,7 +1,7 @@
 #include "SearchWorker.h"
 
-//#include <nan.h>
-#include "node_modules/nan/nan.h"
+#include <nan.h>
+//#include "node_modules/nan/nan.h"
 #include <functional>
 #include <iostream>
 #include <cmath>
