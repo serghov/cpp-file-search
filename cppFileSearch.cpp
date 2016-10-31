@@ -5,12 +5,12 @@
 #include "cppFileSearch.h"
 
 void
-findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, vector<occurrence> &res,
+findInFile(bf::path filePath,const wregex &reg, vector<occurrence> &res,
            bool multiline)
 {
-    //vector<occurrence> res{};
-    res = vector<occurrence>();
-
+	const wstring filename(filePath.wstring());
+	bf::wifstream stream(filePath);
+	//using bf here instead of std to work with path, not the best solution
     auto findAll = [&res, &filename, &reg](wstring &text, int lineNum) //reimplement somehow with default arguments?
     {
         std::wsregex_iterator(text.begin(), text.end(), reg);
@@ -23,9 +23,7 @@ findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, ve
 
         }
     };
-    //read bom from files to check type then to processing
-    //will probably slow down everything
-    //maybe do this with a flag?
+
     if (multiline)
     {
         /*wstring text;
@@ -44,12 +42,16 @@ findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, ve
         }
 
     }
-
-    //cout <<"here"<<endl;
 }
 
 int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> &res, int limit)
 {
+	res  =  vector<occurrence>{};
+	if (!bf::is_directory(dir_path))
+	{
+		findInFile(dir_path, reg, res);
+		return 1;
+	}
     const bf::recursive_directory_iterator end;
     int files = 0;
     const auto it = find_if(bf::recursive_directory_iterator(dir_path), end,
@@ -71,12 +73,8 @@ int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> 
 
                                 if (fileSize == 0 || fileSize > max_file_size)
                                     return false;
-                                //cout << boost::filesystem::file_size(e.path()) << endl;
-                                bf::wifstream fin(e.path());//using bf here instead of std to work with path, not the best solution
-                                fin.imbue(std::locale("en_US.UTF-8"));
-                                vector<occurrence> cur{};
-                                findInFile(fin, e.path().wstring(), reg, cur);
-                                res.insert(res.end(), cur.begin(), cur.end());
+
+                                findInFile(e.path(), reg, res);
                                 files++;
                                 return false;
                             });

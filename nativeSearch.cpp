@@ -44,7 +44,13 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value> &info)
     Callback *callback;
     callback = new Callback(info[1].As<Function>());
 
-    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr, limit, caseSensitive, isRegex));
+	std::locale::global (std::locale ("en_US.UTF-8"));
+	//fixes support for utf8 and ascii, but ansi utf16, utf32 wont work
+	//maybe do the bom checking for 16 and 32?
+	//Slows down everything by 0.1
+	//maybe do with a flag?
+
+    AsyncQueueWorker(new SearchWorker(callback, pathWStr, regWStr, limit, caseSensitive, isRegex, isMultiline));
 }
 
 void Init(v8::Local <v8::Object> exports, v8::Local <v8::Object> module)

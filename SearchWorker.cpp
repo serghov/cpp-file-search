@@ -5,9 +5,9 @@
 #include "SearchWorker.h"
 
 SearchWorker::SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit,
-                           bool caseSensitive, bool isRegex)
+                           bool caseSensitive, bool isRegex, bool isMultiline)
         : AsyncWorker(callback), searchRoot(searchRoot), regexWStr(regexWStr), error(), searchLimit(searchLimit),
-          caseSensitive(caseSensitive), isRegex(isRegex) {}
+          caseSensitive(caseSensitive), isRegex(isRegex), isMultiline(isMultiline) {}
 
 SearchWorker::~SearchWorker() {}
 

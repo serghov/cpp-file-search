@@ -27,9 +27,10 @@ class SearchWorker : public AsyncWorker
     int searchLimit;
     bool caseSensitive;
     bool isRegex;
+	bool isMultiline;
 public:
     SearchWorker(Callback *callback, wstring searchRoot, wstring regexWStr, int searchLimit,
-                 bool caseSensitive = true, bool isRegex = true);
+                 bool caseSensitive = true, bool isRegex = true, bool isMultiline = false);
 
     ~SearchWorker();
 

@@ -43,7 +43,7 @@ enum
     max_file_size = 50 * 1024 * 1024
 };//make accessible from js somehow
 
-void findInFile(std::wifstream &stream, const wstring filename, const wregex &reg, vector<occurrence> &res,
+void findInFile(bf::path filePath, const wregex &reg, vector<occurrence> &res,
                 bool multiline = false);
 
 int findInFiles(const bf::path &dir_path, const wregex &reg, vector<occurrence> &res, int limit);
